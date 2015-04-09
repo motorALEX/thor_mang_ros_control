@@ -39,8 +39,8 @@
 //#include <dynamixel_pro_driver/dynamixel_pro_driver.h>
 
 // THOR-OP includes
-#include <framework/Thor.h>
-#include <motion/motionmodule.h>
+//#include <framework/Thor.h>
+//#include <motion/motionmodule.h>
 
 // ROS Control includes
 #include <hardware_interface/joint_command_interface.h>
@@ -63,11 +63,11 @@
 namespace Thor
 {
 class ThorMangHardwareInterface
-  : public MotionModule
-  , public hardware_interface::RobotHW
+  //: public MotionModule
+  : public hardware_interface::RobotHW
 {
 public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+  //EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   enum JointIDs
   {
     R_SHOULDER_PITCH      =  1,
@@ -133,7 +133,7 @@ public:
 
   void setJointStateRate(double joint_state_rate);
 
-  void setTorqueOn(JointData& joint, bool enable);
+  //void setTorqueOn(JointData& joint, bool enable);
   void setTorqueOn(int id, bool enable);
   void setTorqueOn(bool enable);
 
@@ -149,7 +149,7 @@ protected:
 
   ThorMangHardwareInterface& operator=(ThorMangHardwareInterface const&);
 
-  JointData* getJoint(int id);
+  //JointData* getJoint(int id);
 
   // Robot bringup
   bool robotBringUp();
@@ -167,14 +167,14 @@ protected:
   static ThorMangHardwareInterface::Ptr singelton;
 
   // UIDs of joints and sensors
-  static const std::string jointUIDs[MotionStatus::MAXIMUM_NUMBER_OF_JOINTS-1];
+  static const std::string jointUIDs[38-1];
   static const std::string ftSensorUIDs[MAXIMUM_NUMBER_OF_FT_SENSORS];
 
   /** joint offsets from ROS zero to Robotis zero
   /* Robotis zero: "ready stand pose"
    * ROS zero: "fully extended arms/legs"
    **/
-  static const int ros_joint_offsets[MotionStatus::MAXIMUM_NUMBER_OF_JOINTS-1];
+  static const int ros_joint_offsets[38-1];
 
   // parameters
   double joint_state_intervall;
@@ -184,7 +184,7 @@ protected:
   mutable boost::mutex dynamixel_mutex;
 
   // INS
-  boost::shared_ptr<Ins> ins;
+  //boost::shared_ptr<Ins> ins;
 
   // ros controll stuff
   hardware_interface::JointStateInterface joint_state_interface;
@@ -195,10 +195,10 @@ protected:
 
   hardware_interface::ThorMangFootstepInterface footstep_interface;
 
-  double cmd[MotionStatus::MAXIMUM_NUMBER_OF_JOINTS-1]; // todo: replace with std::map<std::string, double>
-  double pos[MotionStatus::MAXIMUM_NUMBER_OF_JOINTS-1]; // todo: replace with std::map<std::string, double>
-  double vel[MotionStatus::MAXIMUM_NUMBER_OF_JOINTS-1]; // todo: replace with std::map<std::string, double>
-  double eff[MotionStatus::MAXIMUM_NUMBER_OF_JOINTS-1]; // todo: replace with std::map<std::string, double>
+  double cmd[38-1]; // todo: replace with std::map<std::string, double>
+  double pos[38-1]; // todo: replace with std::map<std::string, double>
+  double vel[38-1]; // todo: replace with std::map<std::string, double>
+  double eff[38-1]; // todo: replace with std::map<std::string, double>
 
   // IMU
   hardware_interface::ImuSensorHandle::Data imu_data;

@@ -29,7 +29,7 @@
       <arg name="namespace" value="$(arg namespace)" />
     </include>
 
-    <node name="thor_mang_ros_controller" pkg="thor_mang_ros_control" type="thor_mang_ros_controller" respawn="true" output="screen">
+    <node name="thor_mang_ros_controller" pkg="thor_mang_ros_control" type="thor_mang_ros_controller" respawn="true" output="screen" launch-prefix="xterm -e gdb -ex run -ex bt --args">
       <rosparam file="$(find thor_mang_ros_control)/config/thor_mang_controller_config.yaml" command="load"/>
       <param name="thor_mang_ini_file" value="$(find thor_mang_ros_control)/config/thor_mang_config.ini" />
     </node>

@@ -36,6 +36,8 @@ ThorMangRosControllerNode::ThorMangRosControllerNode()
 {
   ros::NodeHandle nh;
 
+  ros::Duration(10.0).sleep();
+
   // init controller
   std::string thor_mang_ini_file;
   nh.param("thor_mang_ros_controller/thor_mang_ini_file", thor_mang_ini_file, std::string(""));
@@ -43,29 +45,29 @@ ThorMangRosControllerNode::ThorMangRosControllerNode()
   double joint_state_rate;
   nh.param("joint_state_controller/publish_rate", joint_state_rate, 50.0);
 
-  // Initialize THOR-MANG Framework
-  if(Thor::MotionManager::GetInstance()->Initialize() == true)
-  {
-    ThorMangHardwareInterface::Instance()->setJointStateRate(joint_state_rate);
-    Thor::MotionManager::GetInstance()->AddModule(ThorMangHardwareInterface::Instance().get());
+//  // Initialize THOR-MANG Framework
+//  if(Thor::MotionManager::GetInstance()->Initialize() == true)
+//  {
+//    ThorMangHardwareInterface::Instance()->setJointStateRate(joint_state_rate);
+//    Thor::MotionManager::GetInstance()->AddModule(ThorMangHardwareInterface::Instance().get());
 
-    minIni* ini = new minIni(thor_mang_ini_file);
-    Thor::MotionManager::GetInstance()->LoadINISettings(ini);
-    delete ini;
+//    minIni* ini = new minIni(thor_mang_ini_file);
+//    Thor::MotionManager::GetInstance()->LoadINISettings(ini);
+//    delete ini;
 
-    //Thor::MotionManager::GetInstance()->StartTimer(); // sadly crashes
-  }
-  else
-  {
-    ROS_ERROR("Initializing Motion Manager failed!");
-    ThorMangHardwareInterface::Instance()->Initialize();
-  }
+//    //Thor::MotionManager::GetInstance()->StartTimer(); // sadly crashes
+//  }
+//  else
+//  {
+//    ROS_ERROR("Initializing Motion Manager failed!");
+//    ThorMangHardwareInterface::Instance()->Initialize();
+//  }
 
   // Initialize Ros Control
-  controller_manager.reset(new controller_manager::ControllerManager(ThorMangHardwareInterface::Instance().get(), nh));
+  //controller_manager.reset(new controller_manager::ControllerManager(ThorMangHardwareInterface::Instance().get(), nh));
 
   // subscribe topics
-  torque_on_sub = nh.subscribe("torque_on", 1, &ThorMangRosControllerNode::setTorqueOn, this);
+  //torque_on_sub = nh.subscribe("torque_on", 1, &ThorMangRosControllerNode::setTorqueOn, this);
 
   ROS_INFO("Initialization of ros controller completed!");
 }
@@ -85,7 +87,7 @@ void ThorMangRosControllerNode::update(ros::Time time, ros::Duration period)
   {
     // manually lock dynamixel access for thor mang framework
     boost::mutex::scoped_lock lock(ThorMangHardwareInterface::Instance()->getDynamixelMutex());
-    Thor::MotionManager::GetInstance()->Process();
+    //Thor::MotionManager::GetInstance()->Process();
   }
 
   // ros control update cycle
@@ -113,13 +115,13 @@ int main(int argc, char** argv)
 
   while (ros::ok())
   {
-    rate.sleep();
+//    rate.sleep();
 
-    ros::Time current_time = ros::Time::now();
-    ros::Duration elapsed_time = current_time - last_time;
-    last_time = current_time;
+//    ros::Time current_time = ros::Time::now();
+//    ros::Duration elapsed_time = current_time - last_time;
+//    last_time = current_time;
 
-    thor_mang_ros_controller_node.update(current_time, elapsed_time);
+//    thor_mang_ros_controller_node.update(current_time, elapsed_time);
   }
 
   return 0;
